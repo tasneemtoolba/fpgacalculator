@@ -1,0 +1,71 @@
+module abc (
+input  [3:0] dat_a_in,
+input  [3:0] dat_b_in,
+input  [1:0] function_in,
+output wire led[0:2][0:6];
+
+);
+
+reg stat[0:2][0:6];
+
+integer out,t;
+
+always@(dat_a_in or dat_b_in)
+begin
+
+    case (function_in)
+
+        2'b00: begin
+            out = dat_a_in + dat_b_in;
+        
+         end
+        2'b01: begin
+            out = dat_a_in - dat_b_in;
+        
+        end
+        2'b10: begin
+            out = dat_a_in * dat_b_in;
+        
+        end
+        2'b11: begin
+            out = dat_a_in / dat_b_in;
+        
+        end
+       
+		 endcase
+		 
+		 
+
+        while(out != 0'd0)
+		    begin
+          t = out % 10;
+          out = out / 10;
+          case(t)
+          0'd0:stat[i] = 7'b0000001;    
+          1'd1:stat[i] = 7'b1001111;
+          2'd2:stat[i] = 7'b0010010;
+          2'd3:stat[i] = 7'b0000110;
+          3'd4:stat[i] = 7'b1001100;
+          3'd5:stat[i] = 7'b0100100;
+          3'd6:stat[i] = 7'b0100000;
+          3'd7:stat[i] = 7'b0001111;
+          4'd8:stat[i] = 7'b0000000;
+          4'd9:stat[i] = 7'b0000100;
+          endcase
+          
+          i = i + 1;
+        end       
+      
+         
+   
+end
+
+
+assign led= stat;
+
+// pin planner for led[0][0:6] for 1st block
+// ...................[1][0:6] .... 2nd block
+// ...................[2][0:6] .... 3rd block
+
+
+endmodule
